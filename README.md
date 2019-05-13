@@ -1,1 +1,1 @@
-# blogspot
+# https://mytselection.blogspot.com
