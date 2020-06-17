@@ -66,7 +66,7 @@ dir "$env:LOCALAPPDATA\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2
     
     $imHeight = $imageDetails.Height
     $imWidth = $imageDetails.Width
-    if ($imHeight -le $imWidth ) {
+    if (($imHeight -le $imWidth ) -and ($imWidth -gt 1000)) {
         copy-item -path "$imagePath" -destination "$env:USERPROFILE\Pictures\Spotlight\$imageName.jpg"
     }
 
