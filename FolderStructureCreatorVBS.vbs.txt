@@ -1,0 +1,156 @@
+Sub CreateFolderStructure()
+'Create folder for all vlues in current sheet
+'folders will be created in folder where the excel file was saved
+'folders will be created from first row, first column, until empty row is found
+'Example expected cell structure: (data starting in current sheet, column A, row 1)
+'folder1    subfolder1  subsubfolder1
+'folder2
+'folder3    subfolder3
+'           subfolder4
+'...
+'this will result in:
+'<currentpath>\folder1\subfolder1\subsubfolder1
+'<currentpath>\folder2
+'<currentpath>\folder3\subfolder3
+'<currentpath>\folder3\subfolder4
+'...
+    baseFolder = BrowseForFolder
+    If (baseFolder = False) Then
+        Exit Sub
+    End If
+    Set fs = CreateObject("Scripting.FileSystemObject")
+    For iRow = 2 To 6500
+        pathToCreate = baseFolder
+        leafFound = False
+        For iColumn = 1 To 6500
+            currValue = Replace(Replace(Replace(Replace(Replace(Replace(Replace(Worksheets(ActiveCell.Worksheet.Name).Cells(iRow, iColumn).Value, ":", ""), "*", ""), "?", ""), Chr(34), ""), "<", ""), ">", ""), "|", "")
+            If (currValue = "" And leafFound) Then
+                Exit For
+            ElseIf (currValue = "") Then
+                parentFolder = FindParentFolder(iRow, iColumn)
+                parentFolder = Replace(Replace(Replace(Replace(Replace(Replace(Replace(parentFolder, ":", ""), "*", ""), "?", ""), Chr(34), ""), "<", ""), ">", ""), "|", "")
+                If (parentFolder = False) Then
+                    Exit For
+                Else
+                    pathToCreate = pathToCreate & "\" & parentFolder
+                    If Not (fs.FolderExists(pathToCreate)) Then
+                        CreateDirs (pathToCreate)
+                    End If
+                End If
+            Else
+                leafFound = True
+                pathToCreate = pathToCreate & "\" & currValue
+                If Not (fs.FolderExists(pathToCreate)) Then
+                    CreateDirs (pathToCreate)
+                End If
+            End If
+        Next
+        If (leafFound = False) Then
+            Exit For
+        End If
+    Next
+End Sub
+
+Function FindParentFolder(row, column)
+    For iRow = row To 0 Step -1
+        currValue = Worksheets(ActiveCell.Worksheet.Name).Cells(iRow, column).Value
+        If (currValue <> "") Then
+            FindParentFolder = CStr(currValue)
+            Exit Function
+        ElseIf (column <> 1) Then
+            leftValue = Worksheets(ActiveCell.Worksheet.Name).Cells(iRow, column - 1).Value
+            If (leftValue <> "") Then
+                FindParentFolder = False
+                Exit Function
+            End If
+        End If
+    Next
+End Function
+
+
+Function BrowseForFolder(Optional OpenAt As Variant) As Variant
+     'Function purpose:  To Browser for a user selected folder.
+     'If the "OpenAt" path is provided, open the browser at that directory
+     'NOTE:  If invalid, it will open at the Desktop level
+     
+    Dim ShellApp As Object
+     
+     'Create a file browser window at the default folder
+    Set ShellApp = CreateObject("Shell.Application"). _
+    BrowseForFolder(0, "Please choose a folder", 0, OpenAt)
+     'Set the folder to that selected.  (On error in case cancelled)
+    On Error Resume Next
+    BrowseForFolder = ShellApp.self.Path
+    On Error GoTo 0
+     
+     'Destroy the Shell Application
+    Set ShellApp = Nothing
+     
+     'Check for invalid or non-entries and send to the Invalid error
+     'handler if found
+     'Valid selections can begin L: (where L is a letter) or
+     '\\ (as in \\servername\sharename.  All others are invalid
+    Select Case Mid(BrowseForFolder, 2, 1)
+    Case Is = ":"
+        If Left(BrowseForFolder, 1) = ":" Then GoTo Invalid
+    Case Is = "\"
+        If Not Left(BrowseForFolder, 1) = "\" Then GoTo Invalid
+    Case Else
+        GoTo Invalid
+    End Select
+     
+    Exit Function
+     
+Invalid:
+     'If it was determined that the selection was invalid, set to False
+    BrowseForFolder = False
+     
+End Function
+
+Sub CreateDirs(MyDirName)
+' This subroutine creates multiple folders like CMD.EXE's internal MD command.
+' By default VBScript can only create one level of folders at a time (blows
+' up otherwise!).
+'
+' Argument:
+' MyDirName   [string]   folder(s) to be created, single or
+'                        multi level, absolute or relative,
+'                        "d:\folder\subfolder" format or UNC
+'
+' Written by Todd Reeves
+' Modified by Rob van der Woude
+' http://www.robvanderwoude.com
+
+    Dim arrDirs, i, idxFirst, objFSO, strDir, strDirBuild
+
+    ' Create a file system object
+    Set objFSO = CreateObject("Scripting.FileSystemObject")
+
+    ' Convert relative to absolute path
+    strDir = objFSO.GetAbsolutePathName(MyDirName)
+
+    ' Split a multi level path in its "components"
+    arrDirs = Split(strDir, "\")
+
+    ' Check if the absolute path is UNC or not
+    If Left(strDir, 2) = "\\" Then
+        strDirBuild = "\\" & arrDirs(2) & "\" & arrDirs(3) & "\"
+        idxFirst = 4
+    Else
+        strDirBuild = arrDirs(0) & "\"
+        idxFirst = 1
+    End If
+
+    ' Check each (sub)folder and create it if it doesn't exist
+    For i = idxFirst To UBound(arrDirs)
+        strDirBuild = objFSO.BuildPath(strDirBuild, arrDirs(i))
+        If Not objFSO.FolderExists(strDirBuild) Then
+            objFSO.CreateFolder strDirBuild
+        End If
+    Next
+
+    ' Release the file system object
+    Set objFSO = Nothing
+End Sub
+
+

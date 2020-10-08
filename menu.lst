@@ -1,0 +1,202 @@
+timeout 60
+default /default
+
+
+title Boot from Hard Drive\n
+rootnoverify (hd0,0)
+chainloader (hd0,0)+1
+
+title
+root
+
+title Dos Programs\nRun Dos Programs
+find --set-root /HBCD/memdisk
+kernel /HBCD/memdisk
+initrd /HBCD/boot.gz
+
+title Mini Windows Xp\nRun Antivirus and other windows programs
+# example password: test 
+# password --md5 $1$gNe0$KZPOE8wNbTNSKOzrajuoB0
+find --set-root /HBCD/XPLOADER.BIN
+chainloader /HBCD/XPLOADER.BIN
+
+title BackTrack loadkeys be;startx
+kernel /casper/vmlinuz BOOT=casper boot=casper persistent rw quiet vga=0x317
+initrd /casper/initrd.gz
+
+
+title Windows 7 installation from partition 0
+root (hd0,0)
+chainloader /bootmgr
+
+
+title Start Vista/Win7/Server 2008 Setup or PE/Recovery ISO from partition 0
+map --unmap=0:0xff
+map --unhook
+root (hd0,0)
+chainloader /bootmgr
+
+title Mini Linux\nRecovery Is Possible Linux (Min RAM 350MB)
+find --set-root /HBCD/linux
+kernel /HBCD/linux xlogin keymap=us xkeymap=us xdriver=fbdev root=/dev/ram0 rw vga=791
+initrd /HBCD/riplinux.gz
+
+title
+root
+
+title Windows Memory Diagnostic\n
+find --set-root /HBCD/memdisk
+kernel /HBCD/memdisk
+initrd /HBCD/wmemtest.gz
+
+title MemTest86+\n
+find --set-root /HBCD/memtest.gz
+map --mem /HBCD/memtest.gz (fd0)
+map --hook
+chainloader (fd0)+1
+rootnoverify (fd0)
+map --floppies=1
+boot
+
+title Offline NT/2000/XP/Vista/7 Password Changer\nWindows Password Reset
+find --set-root /HBCD/chntpw
+kernel /HBCD/chntpw vga=1
+initrd /HBCD/chntpw.gz
+
+title Kon-Boot\nWindows (any/blank password) and Linux (kon-usr) Login Without a Password
+find --set-root /HBCD/memdisk
+kernel /HBCD/memdisk
+initrd /HBCD/konboot.gz
+
+title Seagate DiscWizard (Powered by Acronis Trueimage)\nPress ALT+T+O+K to skip Error
+find --set-root /HBCD/SeagatDW
+kernel /HBCD/SeagatDW vga=788 ramdisk_size=32768 acpi=off quiet noapic mbrcrcs on
+initrd /HBCD/SeagatDW.gz
+
+title PLoP Boot Manager\n
+find --set-root /HBCD/plpbt.bin
+kernel /HBCD/plpbt.bin
+
+title ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+root
+
+title ³ Boot from Hard Drive - Windows XP (NTLDR)        ³\n
+find --set-root --ignore-floppies --ignore-cd /ntldr
+map () (hd0)
+map (hd0) ()
+map --rehook
+find --set-root --ignore-floppies --ignore-cd /ntldr
+chainloader /ntldr
+savedefault --wait=2
+
+title ³ Boot from Hard Drive - Windows Vista/7 (BOOTMGR) ³\n
+find --set-root --ignore-floppies --ignore-cd /bootmgr
+map () (hd0)
+map (hd0) ()
+map --rehook
+find --set-root --ignore-floppies --ignore-cd /bootmgr
+chainloader /bootmgr
+savedefault --wait=2
+
+title ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+root
+
+title More...
+root
+
+title Smart Boot Manager 3.7.1\n
+find --set-root /HBCD/memdisk
+kernel /HBCD/memdisk
+initrd /HBCD/smartbm.gz
+
+title Fix "NTLDR is Missing"\n
+find --set-root /HBCD/memdisk
+kernel /HBCD/memdisk
+initrd /HBCD/ntldr.gz
+
+title Darik's Boot and Nuke\nHard Disk Eraser
+find --set-root /HBCD/dban.gz
+kernel /HBCD/memdisk
+initrd /HBCD/dban.gz
+
+title Dos Programs (Alternative Boot Method)\nUsing Grub4Dos map
+find --set-root /HBCD/boot.gz
+map --mem /HBCD/boot.gz (fd0)
+map --hook
+chainloader (fd0)+1
+rootnoverify (fd0)
+map --floppies=1
+boot
+
+title Mini Linux 640x480\nRecovery Is Possible Linux
+find --set-root /HBCD/riplinux.gz
+kernel /HBCD/linux xlogin keymap=us xkeymap=us root=/dev/ram0 rw vga=normal video=640x480
+initrd /HBCD/riplinux.gz
+
+title Linux Console\nRecovery Is Possible Linux
+find --set-root /HBCD/linux
+kernel /HBCD/linux root=/dev/ram0 rw vga=normal
+initrd /HBCD/riplinux.gz
+
+title Boot HDD 1 MBR\n
+rootnoverify (hd0)
+chainloader +1
+title Boot HDD 1 Partition 1\n
+rootnoverify (hd0,0)
+chainloader +1
+title Boot HDD 1 Partition 2\n
+rootnoverify (hd0,1)
+chainloader +1
+title Boot HDD 1 Partition 3\n
+rootnoverify (hd0,2)
+chainloader +1
+title Boot HDD 1 Partition 4\n
+rootnoverify (hd0,3)
+chainloader +1
+title Boot HDD 2 MBR\n
+rootnoverify (hd1)
+chainloader +1
+title Boot HDD 2 Partition 1\n
+rootnoverify (hd1,0)
+chainloader +1
+title Boot HDD 2 Partition 2\n
+rootnoverify (hd1,1)
+chainloader +1
+title Boot HDD 2 Partition 3\n
+rootnoverify (hd1,2)
+chainloader +1
+title Boot HDD 2 Partition 4\n
+rootnoverify (hd1,3)
+chainloader +1
+title More...
+root
+
+title Boot HDD 3 MBR\n
+rootnoverify (hd2)
+chainloader +1
+title Boot HDD 3 Partition 1\n
+rootnoverify (hd2,0)
+chainloader +1
+title Boot HDD 3 Partition 2\n
+rootnoverify (hd2,1)
+chainloader +1
+title Boot HDD 3 Partition 3\n
+rootnoverify (hd2,2)
+chainloader +1
+title Boot HDD 3 Partition 4\n
+rootnoverify (hd2,3)
+chainloader +1
+
+title Chainload isolinux.bin\n
+find --set-root /HBCD/isolinux.bin
+chainloader /HBCD/isolinux.bin
+
+title Custom Menu\n
+find --set-root /HBCD/menu-custom.lst
+configfile /HBCD/menu-custom.lst
+
+title ...Back
+root
+
+
+

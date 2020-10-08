@@ -1,0 +1,250 @@
+title ...Back to Main Menu\n
+find --set-root /HBCD/menu.lst
+configfile /HBCD/menu.lst
+
+title AVG Rescue CD (Anti-Virus + Anti-Spyware)
+find --set-root /avg.iso
+map /avg.iso (hd32)
+map --hook
+chainloader (hd32)
+
+title Kaspersky Rescue CD (Virus Scanner)
+find --set-root /rescue/rescue.iso
+map /rescue/rescue.iso (0xff)
+map --hook
+root (0xff)
+chainloader (0xff)
+
+title Bitdefender Rescue CD (Virus Scanner)
+find --set-root /bd-boot/isolinux/minirt.gz
+kernel /bd-boot/isolinux/linux ramdisk_size=100000 init=/etc/init lang=us apm=power-off vga=791 initrd=minirt.gz nomce quiet BOOT_IMAGE=knoppix knoppix_dir=KNOPPIX
+initrd /bd-boot/isolinux/minirt.gz
+
+title AVIRA AntiVir Rescue CD (Virus Scanner)
+find --set-root /avira/vmlinuz
+kernel /avira/vmlinuz edd=off vga=ask initrd=/avira/initrd.gz ramdisk_size=133551 root=/dev/ram0 rw console=/dev/vc/4
+initrd /avira/initrd.gz
+
+title Parted Magic 5.5
+find --set-root --ignore-floppies /pmagic-5.5.iso
+map --heads=0 --sectors-per-track=0 /pmagic-5.5.iso (0xff)
+map --hook
+root (0xff)
+chainloader (0xff)
+
+title Clonezilla
+find --set-root /clonezilla/live/initrd.img
+kernel /clonezilla/live/vmlinuz live-media-path=clonezilla/live bootfrom=/dev/sd boot=live union=aufs noprompt ocs_live_run="ocs-live-general" ocs_live_extra_param="" ocs_live_keymap="" ocs_live_batch="no" ocs_lang="" vga=791 ip=frommedia
+initrd /clonezilla/live/initrd.img
+
+title Boot gparted (Partition Tools)
+find --set-root /gparted/live/initrd.img
+kernel /gparted/live/vmlinuz live-media-path=gparted/live bootfrom=/dev/sd boot=live union=aufs noswap noprompt ip=frommedia
+initrd /gparted/live/initrd.img
+
+title Partition Wizard 5 (Partition Tools)
+find --set-root /pwhe5.iso
+map /pwhe5.iso (hd32)
+map --hook
+root (hd32)
+chainloader (hd32)
+
+title Redo Backup and Recovery
+find --set-root --ignore-floppies --ignore-cd /redobackup-0.9.3.iso
+map --heads=0 --sectors-per-track=0 /redobackup-0.9.3.iso (hd32)
+map --hook
+chainloader (hd32)
+
+title Ubuntu Rescue Remix 10.04 (Recovery Tools)
+find --set-root /ubuntu-rescue-remix-10-04.iso
+map /ubuntu-rescue-remix-10-04.iso (0xff)
+map --hook
+root (0xff)
+kernel /casper/vmlinuz file=/cdrom/preseed/ubuntu.seed boot=casper iso-scan/filename=/ubuntu-rescue-remix-10-04.iso splash
+initrd /casper/initrd.lz
+
+title BackTrack 4 Final (Penetration Testing)
+find --set-root /bt-boot/vmlinuz
+kernel /bt-boot/vmlinuz BOOT=casper boot=casper persistent rw splash 
+initrd /bt-boot/initrd.gz
+boot
+
+title Ultimate Boot CD 5.02
+find --set-root /ubcd502.iso
+map /ubcd502.iso (hd32)
+map --hook
+chainloader (hd32)
+
+title OphCrack XP 2.3.1 (XP Password Cracker)
+find --set-root /ophcrack-xp-livecd-2.3.1.iso
+map /ophcrack-xp-livecd-2.3.1.iso (0xff)
+map --hook
+root (0xff)
+kernel /boot/bzImage rw root=/dev/null vga=normal lang=C kmap=us screen=1024x768x16 autologin
+initrd /boot/rootfs.gz 
+
+title OphCrack Vista 2.3.1 (Vista Password Cracker)
+find --set-root /ophcrack-vista-livecd-2.3.1.iso
+map /ophcrack-vista-livecd-2.3.1.iso (0xff)
+map --hook
+root (0xff)
+kernel /boot/bzImage rw root=/dev/null vga=normal lang=C kmap=us screen=1024x768x16 autologin
+initrd /boot/rootfs.gz 
+
+title EASUS Disk Copy
+find --set-root /dc2.iso
+map --mem /dc2.iso (hd32)
+map --hook
+root (hd32)
+chainloader (hd32)
+
+title Install Mandriva Linux Free 2010.0
+find --set-root /mandriva/i586/isolinux/alt0/all.rdz
+kernel /mandriva/i586/isolinux/alt0/vmlinuz root=(hd0,0) splash=silent 
+initrd /mandriva/i586/isolinux/alt0/all.rdz
+
+title openSUSE 11.2 DVD
+find --set-root /openSUSE/boot/i386/loader/initrd
+kernel /openSUSE/boot/i386/loader/linux root=(hd0,0) splash=silent 
+initrd /openSUSE/boot/i386/loader/initrd
+
+title Ubuntu 10.04 Netbook Remix (NetBook Distro)
+find --set-root /ubuntu-10.04-netbook-i386.iso
+map /ubuntu-10.04-netbook-i386.iso (0xff)
+map --hook
+root (0xff)
+kernel /casper/vmlinuz floppy.allowed_drive_mask=0 noprompt cdrom-detect/try-usb=true file=/cdrom/preseed/ubuntu-netbook.seed boot=casper persistent iso-scan/filename=/ubuntu-10.04-netbook-i386.iso splash
+initrd /casper/initrd.lz
+
+title Eeebuntu 3.0.1 Netbook Remix (NetBook Distro)
+find --set-root /eeebuntu-3.0.1-nbr.iso
+map /eeebuntu-3.0.1-nbr.iso (0xff)
+map --hook
+root (0xff)
+kernel /casper/vmlinuz noprompt cdrom-detect/try-usb=true file=/cdrom/preseed/ubuntu.seed boot=casper persistent iso-scan/filename=/eeebuntu-3.0.1-nbr.iso splash
+initrd /casper/initrd.gz
+
+title Jolicloud (NetBook Distro)
+find --set-root /Jolicloud-PreFinal.iso
+map --heads=0 --sectors-per-track=0 /Jolicloud-PreFinal.iso (0xff)
+map --hook
+root (0xff)
+kernel /casper/vmlinuz noprompt cdrom-detect/try-usb=true file=/cdrom/preseed/jolicloud.seed boot=casper persistent iso-scan/filename=/Jolicloud-PreFinal.iso splash
+initrd /casper/initrd.gz
+
+title EasyPeasy 1.6 (NetBook Distro)
+find --set-root /EasyPeasy-1.6.iso
+map /EasyPeasy-1.6.iso (0xff)
+map --hook
+root (0xff)
+kernel /casper/vmlinuz noprompt cdrom-detect/try-usb=true file=/cdrom/preseed/ubuntu-netbook.seed boot=casper persistent iso-scan/filename=/EasyPeasy-1.6.iso splash
+initrd /casper/initrd.lz
+
+title xPUD 0.9.2 (NetBook Distro)
+find --set-root --ignore-floppies --ignore-cd /xpud-0.9.2.iso
+map --heads=0 --sectors-per-track=0 /xpud-0.9.2.iso (hd32)
+map --hook
+chainloader (hd32)
+
+title Peppermint Linux
+find --set-root /Peppermint-One-06172010.iso
+map /Peppermint-One-06172010.iso (0xff)
+map --hook
+root (0xff)
+kernel /casper/vmlinuz file=/cdrom/preseed/mint.seed boot=casper persistent iso-scan/filename=/Peppermint-One-06172010.iso splash
+initrd /casper/initrd.lz
+
+title Linux Mint 9
+find --set-root /linuxmint-9-gnome-cd-i386.iso
+map /linuxmint-9-gnome-cd-i386.iso (0xff)
+map --hook
+root (0xff)
+kernel /casper/vmlinuz file=/cdrom/preseed/mint.seed boot=casper persistent iso-scan/filename=/linuxmint-9-gnome-cd-i386.iso splash
+initrd /casper/initrd.lz
+
+title DSL 4.4.10
+find --set-root /dsl-4.4.10-initrd.iso
+map --mem /dsl-4.4.10-initrd.iso (hd32)
+map --hook
+root (hd32)
+chainloader (hd32)
+
+title SliTaz 3.0
+find --set-root /slitaz-3.0.iso
+map --heads=0 --sectors-per-track=0 /slitaz-3.0.iso (hd32)
+map --hook
+chainloader (hd32)
+
+title YlmF (Windows Like OS)
+find --set-root /YlmF_OS_3.0.iso
+map /YlmF_OS_3.0.iso (0xff)
+map --hook
+root (0xff)
+kernel /casper/vmlinuz file=/cdrom/preseed/ubuntu.seed boot=casper persistent iso-scan/filename=/YlmF_OS_3.0.iso splash
+initrd /casper/initrd.img
+
+title Puppy 4.3.1
+find --set-root /puppy/pup-431.sfs
+kernel /puppy/vmlinuz
+initrd /puppy/initrd.gz
+
+title Slax 6.1.2 Graphics mode (KDE) 
+find --set-root /Slax612/boot/initrd.gz
+kernel /Slax612/boot/vmlinuz initrd=/boot/initrd.gz ramdisk_size=6666 root=/dev/ram0 rw autoexec=xconf;telinit~4 changes=/Slax612
+initrd /Slax612/boot/initrd.gz
+
+title TinyCore
+find --set-root /tinycore-current.iso
+map /tinycore-current.iso (0xff) || map --mem /tinycore-current.iso (0xff)
+map --hook
+chainloader (0xff)
+
+title Ubuntu 10.04 (GNOME Desktop x86)
+find --set-root /ubuntu-10.04-desktop-i386.iso
+map /ubuntu-10.04-desktop-i386.iso (0xff)
+map --hook
+root (0xff)
+kernel /casper/vmlinuz file=/cdrom/preseed/ubuntu.seed boot=casper persistent iso-scan/filename=/ubuntu-10.04-desktop-i386.iso splash
+initrd /casper/initrd.lz
+
+title Xubuntu 10.04 (XFCE Desktop x86)
+find --set-root /xubuntu-10.04-desktop-i386.iso
+map /xubuntu-10.04-desktop-i386.iso (0xff)
+map --hook
+root (0xff)
+kernel /casper/vmlinuz file=/cdrom/preseed/xubuntu.seed boot=casper persistent iso-scan/filename=/xubuntu-10.04-desktop-i386.iso splash
+initrd /casper/initrd.lz
+
+title Kubuntu 10.04 (KDE Desktop x86)
+find --set-root /kubuntu-10.04-desktop-i386.iso
+map /kubuntu-10.04-desktop-i386.iso (0xff)
+map --hook
+root (0xff)
+kernel /casper/vmlinuz file=/cdrom/preseed/kubuntu.seed boot=casper persistent iso-scan/filename=/kubuntu-10.04-desktop-i386.iso splash
+initrd /casper/initrd.lz
+
+title Lubuntu 10.04 (LXDE Lightweight Desktop x86)
+find --set-root /lubuntu-10.04.iso
+map /lubuntu-10.04.iso (0xff)
+map --hook
+root (0xff)
+kernel /casper/vmlinuz file=/cdrom/preseed/lubuntu.seed boot=casper persistent iso-scan/filename=/lubuntu-10.04.iso splash
+initrd /casper/initrd.lz
+
+title Balder DOS image (FreeDOS)
+find --set-root /balder10.img
+map --unsafe-boot /balder10.img (fd0)
+map --hook
+chainloader --force (fd0)+1
+rootnoverify (fd0)
+
+title DBAN 2.2.6 (Drive Nuker)
+find --set-root /dban-2.2.6_i586.iso
+map --mem /dban-2.2.6_i586.iso (hd32)
+map --hook
+root (hd32)
+chainloader (hd32)
+
+title ...Back to Main Menu\n
+find --set-root /HBCD/menu.lst
+configfile /HBCD/menu.lst

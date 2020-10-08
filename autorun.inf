@@ -1,0 +1,25 @@
+[AutoRun]
+LABEL=INTEGRAL USB STICK 8GB
+ICON=HBCD\WinTools\BootCd.ico
+OPEN=HBCD\WinTools\Autorun.exe
+ACTION=Launch Hiren Windows tools
+SHELLEXECUTE=HBCD\WinTools\Autorun.exe
+shell\Hiren=Launch Hiren Windows tools
+shell\Hiren\command=HBCD\WinTools\Autorun.exe
+shell\FreeOTFE=Launch FreeOTFE Portable
+shell\FreeOTFE\command=FreeOTFE.bat
+shell\DropBox=Launch DropBox - HBCD
+shell\DropBox\command=DropBoxHBCD.bat
+shell\CleanTemp=Clean Temp folder
+shell\CleanTemp\command=CleanTemp.bat
+shell=Hiren
+[Content]
+MusicFiles=0
+PictureFiles=0
+VideoFiles=0
+[IgnoreContentPaths]
+HBCD
+casper
+Software
+App
+Data
